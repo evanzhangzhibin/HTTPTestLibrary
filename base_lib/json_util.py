@@ -1,11 +1,20 @@
 #!/usr/bin/env python
 # coding: utf-8
-# author: yjiang
+# @Time     : 2018/7/7 17:09
+# @Author   : guo qun
+# @FileName : PyCharm.py
+# @Project  : HTTPTestLibrary
 
 from __future__ import unicode_literals
 
 
 def json_generator(indict, key_value=None):
+    """
+    written by jiang yue
+    :param indict:
+    :param key_value:
+    :return:
+    """
     key_value = key_value[:] if key_value else []
 
     if isinstance(indict, dict):
@@ -43,10 +52,15 @@ def json_generator(indict, key_value=None):
             yield key_value + [indict]
 
 
-def structure_flow(Jsongenerator):
+def structure_flow(json_gen_obj):
+    """
+    written by jiang yue
+    :param json_gen_obj:
+    :return:
+    """
     structure = {}
 
-    for i in json_generator(Jsongenerator):
+    for i in json_generator(json_gen_obj):
 
         if '.'.join(i[:-1]) in structure.keys() and not isinstance(structure['.'.join(i[:-1])], list):
             structure['.'.join(i[:-1])] = [structure['.'.join(i[:-1])]]
@@ -57,6 +71,4 @@ def structure_flow(Jsongenerator):
 
         else:
             structure['.'.join(i[:-1])] = i[-1]
-    # for key,value in  structure.iteritems():
-    #     print (key ,value)
     return structure
