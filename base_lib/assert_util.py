@@ -29,8 +29,11 @@ def json_assert(a_json, e_json):
                 continue
             if a_flow[k] != v:
                 logger.error("[!] RESPONSE-JSON==> [{K}]的**VALUE**不同: \n <actual>: {A} \n <expect>: {E}".format(K=k, A=a_flow[k], E=v))
+                error_count += 1
     else:
         logger.error("[!] RESPONSE-JSON==> **KEY**不同: \n <actual>: {A} \n <expect>: {E}".format(A=a_flow.keys(), E=e_flow.keys()))
+        error_count += 1
+    return error_count
 
 
 

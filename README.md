@@ -50,25 +50,14 @@
 下载代码，将本项目命名为`HTTPTestLibrary`放入Python的site-packages目录即可
 
 ### 使用
+> 忽略比对的值，设定为```"{IGNORE}"```
 
-```
-*** Settings ***
-Library           HTTPTestLibrary
+![测试用例](./images/Snipaste_2018-07-07_20-08-45.png)
 
-*** Test Cases ***
-test1
-    ${test_url}    Set variable    http://localhost:8001/api/v1/fakerfactory
-    ${method}    Set variable    GET
-    ${params}    Set variable    {"number": 1, "columns": "name,age,job"}
-    ${headers}    Set variable    {"Content-type": "application/json"}
-    ${expect_data}    Set variable    {"data":{"count":1,"records":[{"age":22,"job":"{IGNORE}","name":"小明"}]},"status":{"code":"0","status":"ok"}}
-    ${expect_data_type}    Set variable    json
-    Do Test    ${method}    ${test_url}    ${expect_data}    ${expect_data_type}    params=${params}
-```
-
-忽略比对的值，设定为"{IGNORE}"
 
 ### 运行效果
 
-![运行结果](./images/snipaste_20180625_180205.png)
+
+
+![运行结果](./images/Snipaste_2018-07-07_20-06-38.png)
 

@@ -70,7 +70,10 @@ class HTTPTestKeywords(object):
             # actual_data = eval_string_value(actual_data)
             expect_data = eval_string_value(expect_data)
             if expect_data_type == "json":
-                json_assert(actual_data, expect_data)
+                error_count = json_assert(actual_data, expect_data)
+                if error_count > 0:
+                    logger.error("发现错误{}处".format(error_count))
+                    raise AssertionError
             elif expect_data_type == "html":
                 # html_assert(actual_data, expect_data)
                 pass
