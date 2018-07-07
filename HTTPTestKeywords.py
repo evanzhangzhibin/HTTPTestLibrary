@@ -74,6 +74,7 @@ class HTTPTestKeywords(object):
                 if error_count > 0:
                     logger.error("发现错误{}处".format(error_count))
                     raise AssertionError
+                return actual_data
             elif expect_data_type == "html":
                 # html_assert(actual_data, expect_data)
                 pass
@@ -103,6 +104,19 @@ class HTTPTestKeywords(object):
                     a. 比较所有node以及node的attribute
                     b. 忽略部分node的value
         '''
+
+    def json_value(self, obj, k):
+        """
+        json数据中根据传入的key获取value
+        """
+        if not isinstance(obj, dict):
+            raise TypeError('请检查是否为json数据')
+        try:
+            v = obj[k]
+            return v
+        except Exception as err:
+            raise KeyError(err)
+
 
 
 if __name__ == '__main__':
