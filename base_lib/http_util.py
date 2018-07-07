@@ -115,3 +115,16 @@ def handle_response(resp_obj):
         resp_data = resp_obj.text
         logger.warn("响应体没有JSON对象: {}".format(get_json_err))
         return resp_data, 'text'
+
+
+if __name__ == '__main__':
+    from HTTPTestLibrary.base_lib.http_client import HttpSession
+
+    cli = HttpSession()
+    test_url = "http://localhost:8001/api/v1/fakerfactory"
+    test_method = "GET"
+    test_params = {"number": 1, "columns": "name,age,job"}
+    print(test_params)
+    actual_data, res_type = do_http(http_cli=cli, test_url=test_url, method=test_method, params=test_params)
+    print(actual_data)
+    print(res_type)
