@@ -86,24 +86,6 @@ class HTTPTestKeywords(object):
         else:
             logger.error("未知错误! <actual>: {A}, <expect>: {E}".format(A=actual_type, E=expect_data_type))
             raise AssertionError
-        '''
-        进行比对(注意字符编码的统一转换, 都转为unicode编码后比对):
-        I. 先比对类型是否一致
-        II. 再比对结果是否一致
-            1. 若为JSON格式结果
-                1) 期望结果全量比对
-                    a. 比对所有的key以及key对应的value
-                2) 期望结果定制比对
-                    a. 比对所有的key
-                    b. 忽略部分key对应的value
-            json类型的返回结果，要注意数组对象的排序后再比较
-            2. 若为XML或HTML格式的结果(同一层级节点的顺序没有什么影响, 对于内容的传递是一样的, 注意排序后比较)
-                1) 期望结果全量比对
-                    a. 比较所有node以及node的attribute和value
-                2) 期望结果定制比对
-                    a. 比较所有node以及node的attribute
-                    b. 忽略部分node的value
-        '''
 
     def json_value(self, obj, k):
         """
