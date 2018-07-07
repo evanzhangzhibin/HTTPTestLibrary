@@ -39,7 +39,8 @@ class HTTPTestKeywords(object):
                 # if key in bool_key_value and kwargs[key] not in bool_key_value[key]:
                 #     logger.error("传入参数的值错误, 请检查: {K}={V}".format(K=key, V=kwargs[key]))
                 #     raise ValueError
-        http_session_cli = HttpSession(url)
+        logger.info('====raw kwargs ===>{}'.format(kwargs))
+        http_session_cli = HttpSession()
         # todo Robot里面传过来的值, 有部分要进行eval转换才能用
         if 'params' in kwargs:
             kwargs['params'] = parse_string_value(kwargs[str('params')])
@@ -50,11 +51,13 @@ class HTTPTestKeywords(object):
         if 'timeout' in kwargs:
             kwargs['timeout'] = parse_string_value(kwargs[str('timeout')])
         expect_data_type = expect_data_type.lower()
-
+        logger.info('====new kwargs ===>{}'.format(kwargs))
         if url.startswith("https"):
+            logger.info("===========>按照HTTPS   来处理!")
             actual_data, res_type = do_https(http_session_cli, url, method, **kwargs)
             actual_data = parse_string_value(actual_data)
         elif url.startswith('http'):
+            logger.info("===========>按照HTTP  来处理!")
             actual_data, res_type = do_http(http_session_cli, url, method, **kwargs)
             actual_data = parse_string_value(actual_data)
         else:

@@ -8,6 +8,7 @@
 from __future__ import unicode_literals
 import OpenSSL
 from robot.api import logger
+from requests import HTTPError
 
 
 def do_http(http_cli, test_url, method, **kwargs):
@@ -23,7 +24,7 @@ def do_http(http_cli, test_url, method, **kwargs):
         resp = http_cli.request(method=method, url=test_url, **kwargs)
     except Exception as request_err:
         logger.error("执行请求错误, ERROR: {ERR}".format(ERR=request_err))
-        raise IOError
+        raise HTTPError
     else:
         # todo 是否需要指定所有响应使用utf-8编码
         # resp.encoding = 'utf-8'
@@ -41,18 +42,24 @@ def do_https(http_cli, test_url, method, **kwargs):
     if "certificate" in kwargs:
         if kwargs[str("certificate")].endswith(".p12") and "password" not in kwargs:
             logger.error("Need password for .p12 certificate.")
-            return "", 'error'
+            raise HTTPError
         else:
             cert = p12_to_pem(kwargs[str("certificate")], kwargs[str("password")])
             kwargs["cert"] = cert
             kwargs.pop(str("password"))
             kwargs.pop(str("certificate"))
             kwargs['verify'] = False
-            resp = http_cli.request(method=method, url=test_url, **kwargs)
-            return handle_response(resp)
+            try:
+                resp = http_cli.request(method=method, url=test_url, **kwargs)
+            except Exception as request_err:
+                logger.error("执行请求错误, ERROR: {ERR}".format(ERR=request_err))
+                raise HTTPError
+            else:
+                return handle_response(resp)
     else:
         logger.error("No certificate file found for https request.")
-        return "", 'error'
+        raise HTTPError
+
 
 
 def p12_to_pem(cert_name, pwd="000000"):
@@ -108,12 +115,3 @@ def handle_response(resp_obj):
         resp_data = resp_obj.text
         logger.warn("响应体没有JSON对象: {}".format(get_json_err))
         return resp_data, 'text'
-
-# if __name__ == "__main__":
-#     url = "https://172.16.4.63:9090/wzs/api/v3/search?q=18625173586&stype=ALL&page=1&rows=10"
-#     # cert = p12_to_pem("E:\Log\iknow.p12", "123456")
-#     https_session_cli = HttpSession(url)
-#     headers = ""
-#     payload = ""
-#     resp = do_https(https_session_cli, url, "get", headers, payload, certificate = "E:\Log\iknow.p12", password = "123456")
-#     print "response: ", resp

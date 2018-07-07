@@ -19,7 +19,7 @@ def parse_string_value(str_value):
          '{"a": 1}' => {"a": 1}
     """
     try:
-        return literal_eval(str_value)
+        return literal_eval(str(str_value))
     except ValueError:
         return str_value
     except SyntaxError:
