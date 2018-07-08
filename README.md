@@ -49,6 +49,8 @@
 
 下载代码，将本项目命名为`HTTPTestLibrary`放入Python的site-packages目录即可
 
+Python 2.7.15
+
 ### 使用
 > 忽略比对的值，设定为```"{IGNORE}"```
 
